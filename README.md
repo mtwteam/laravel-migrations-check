@@ -1,10 +1,18 @@
-# Laravel Migrations Check GitHub Action
+# GitHub Action: Laravel Migrations Check
 
-GitHub Action to list Laravel migrations modified in Pull Requests as a comment and optionally review them with ChatGPT.
+GitHub Action to list Laravel migrations in Pull Requests and optionally review them with ChatGPT to spot unsafe migrations.
 
 ![sample comment](.github/assets/comment.png)
 
+## Features
+
+- Create a comment with a list of changed migrations and SQL queries they execute (generated with `php artisan migrate --pretend`.
+- Review the migrations with OpenAI's GPT model and add suggestions to the comment.
+- Only request OpenAI API if there are changes in migrations for optimal token usage.
+
 ## Usage
+
+This action requires php and composer dependencies to be installed so `php artisan` can be executed.
 
 Required permissions:
 
