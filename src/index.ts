@@ -17,12 +17,12 @@ const queriesFromMigration = async (filePath: string): Promise<string[]> => {
     "--no-ansi",
     "--execute",
     `echo implode(
-            PHP_EOL,
-            array_column(
-                app("db")->pretend(fn()=>(include "${filePath}")->up()),
-                "query"
-            )
-        )`,
+      PHP_EOL,
+      array_column(
+        app("db")->pretend(fn()=>(include "${filePath}")->up()),
+        "query"
+      )
+    )`,
   ]);
 
   return output.stdout.split("\n").filter((line) => line.trim() !== "");
@@ -98,8 +98,10 @@ const run = async () => {
 
   // Get run hash
   const lastRunHash = runHashFromComment(existingComment?.body || "");
+  console.log(`Last run hash: ${lastRunHash || "none"}`);
 
   const reviewerRun = new Reviewer(OPENAI_API_KEY, migrationsWithQueries, PROJECT_CONTEXT);
+  console.log(`Current run hash: ${reviewerRun.runHash}`);
 
   if (lastRunHash === reviewerRun.runHash) {
     console.log("No changes in migrations since last review. Skipping LLM review.");
