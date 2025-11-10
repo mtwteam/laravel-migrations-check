@@ -1,0 +1,15 @@
+name: "Laravel Migrations Check"
+description: "Comments on PRs containing Laravel migration files"
+runs:
+  using: node24
+  main: dist/index.js
+inputs:
+  github_token:
+    description: "GitHub token"
+    default: ${{ github.token }}
+  openai_token:
+    description: "OpenAI API token"
+    required: false
+  context:
+    description: "Additional context for the LLM"
+    required: false
