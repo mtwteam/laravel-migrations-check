@@ -1,4 +1,4 @@
-export type Migration = {
+export interface Migration {
   filename: string;
   status: "added" | "modified" | "renamed" | "copied" | "changed";
   queries: string[];
@@ -7,4 +7,4 @@ export type Migration = {
     comment: string;
     changes: string;
   };
-};
+}

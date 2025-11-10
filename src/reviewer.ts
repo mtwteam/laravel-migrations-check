@@ -123,6 +123,6 @@ Your goal is to detect potentially dangerous operations that can block tables fo
 }
 
 export const runHashFromComment = (commentBody: string): string | null => {
-  const hashMatch = commentBody.match(/<!-- llm-run-hash: ([a-f0-9]+) -->/);
+  const hashMatch = /<!-- llm-run-hash: ([a-f0-9]+) -->/.exec(commentBody);
   return hashMatch ? hashMatch[1] : null;
 };

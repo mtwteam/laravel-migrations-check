@@ -67,7 +67,7 @@ const run = async () => {
     migrationFiles.map(async (file) => {
       const queries = await queriesFromMigration(file.filename);
       return {
-        filename: file.filename.split("/").pop() || file.filename,
+        filename: file.filename.split("/").pop() ?? file.filename,
         status: file.status,
         queries,
       };
@@ -97,8 +97,8 @@ const run = async () => {
   }
 
   // Get run hash
-  const lastRunHash = runHashFromComment(existingComment?.body || "");
-  console.log(`Last run hash: ${lastRunHash || "none"}`);
+  const lastRunHash = runHashFromComment(existingComment?.body ?? "");
+  console.log(`Last run hash: ${lastRunHash ?? "none"}`);
 
   const reviewerRun = new Reviewer(OPENAI_API_KEY, migrationsWithQueries, PROJECT_CONTEXT);
   console.log(`Current run hash: ${reviewerRun.runHash}`);
@@ -120,4 +120,4 @@ const run = async () => {
   }
 };
 
-run();
+void run();

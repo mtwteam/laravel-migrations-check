@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { getInput } from "@actions/core";
 import { context, getOctokit } from "@actions/github";
 
