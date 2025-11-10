@@ -6,7 +6,7 @@ GitHub Action to list Laravel migrations modified in Pull Requests as a comment 
 
 ## Usage
 
-Add required permissions:
+Required permissions:
 
 ```yml
 permissions:
@@ -32,6 +32,33 @@ Job parameters:
     context: ""
 ```
 
+## Full example
+
+```yml
+on:
+  pull_request:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  migrations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+      - name: Install Composer dependencies
+        run: composer install
+      - uses: mtwteam/laravel-migrations-check@v1
+        with:
+          openai_token: ${{ secrets.OPENAI_API_KEY }}
+          context: |
+            We use MySQL 8.4, big tables are: events, orders.
+```
+
 ## Scenarios
 
 ### Just add a comment with a list of new migrations
@@ -46,5 +73,5 @@ Job parameters:
 - uses: mtwteam/laravel-migrations-check@v1
   with:
     openai_token: ${{ secrets.OPENAI_TOKEN }}
-    context: "We use MySQL 8.4, big tables are: events, orders."
+    context: We use MySQL 8.4, big tables are: events, orders.
 ```
