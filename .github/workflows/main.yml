@@ -28,3 +28,14 @@ jobs:
           key: "${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}"
       - run: npm install
       - run: npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: "${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}"
+      - run: npm install
+      - run: npm run test

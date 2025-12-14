@@ -41,7 +41,7 @@ Your goal is to detect potentially dangerous operations that can block tables fo
     });
   }
 
-  private get input(): string {
+  get input(): string {
     return this.migrations
       .map((migration) => `${migration.filename}\n\n${migration.queries.join("\n")}\n\n${migration.code}`)
       .join("\n\n---\n\n");
