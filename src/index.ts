@@ -1,3 +1,4 @@
+import fs from "fs/promises";
 import { getInput } from "@actions/core";
 import { context } from "@actions/github";
 import { getExecOutput } from "@actions/exec";
@@ -66,10 +67,12 @@ const run = async () => {
   const migrationsWithQueries = (await Promise.all(
     migrationFiles.map(async (file) => {
       const queries = await queriesFromMigration(file.filename);
+      const code = await fs.readFile(file.filename, "utf-8");
       return {
         filename: file.filename.split("/").pop() ?? file.filename,
         status: file.status,
         queries,
+        code,
       };
     }),
   )) as Migration[];

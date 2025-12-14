@@ -31683,6 +31683,35 @@ module.exports = parseParams
 /******/ }
 /******/ 
 /************************************************************************/
+/******/ /* webpack/runtime/compat get default export */
+/******/ (() => {
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__nccwpck_require__.n = (module) => {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			() => (module['default']) :
+/******/ 			() => (module);
+/******/ 		__nccwpck_require__.d(getter, { a: getter });
+/******/ 		return getter;
+/******/ 	};
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/define property getters */
+/******/ (() => {
+/******/ 	// define getter functions for harmony exports
+/******/ 	__nccwpck_require__.d = (exports, definition) => {
+/******/ 		for(var key in definition) {
+/******/ 			if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 			}
+/******/ 		}
+/******/ 	};
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/hasOwnProperty shorthand */
+/******/ (() => {
+/******/ 	__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ })();
+/******/ 
 /******/ /* webpack/runtime/compat */
 /******/ 
 /******/ if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = new URL('.', import.meta.url).pathname.slice(import.meta.url.match(/^file:\/\/\/\w:/) ? 1 : 0, -1) + "/";
@@ -31690,6 +31719,9 @@ module.exports = parseParams
 /************************************************************************/
 var __webpack_exports__ = {};
 
+;// CONCATENATED MODULE: external "fs/promises"
+const promises_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("fs/promises");
+var promises_default = /*#__PURE__*/__nccwpck_require__.n(promises_namespaceObject);
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(7484);
 // EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
@@ -31986,7 +32018,7 @@ const safeJSON = (text) => {
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 //# sourceMappingURL=sleep.mjs.map
 ;// CONCATENATED MODULE: ./node_modules/openai/version.mjs
-const VERSION = '6.8.1'; // x-release-please-version
+const VERSION = '6.9.1'; // x-release-please-version
 //# sourceMappingURL=version.mjs.map
 ;// CONCATENATED MODULE: ./node_modules/openai/internal/detect-platform.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
@@ -39831,7 +39863,7 @@ Your goal is to detect potentially dangerous operations that can block tables fo
     }
     get input() {
         return this.migrations
-            .map((migration) => `${migration.filename}\n${migration.queries.join("\n")}`)
+            .map((migration) => `${migration.filename}\n\n${migration.queries.join("\n")}\n\n${migration.code}`)
             .join("\n\n---\n\n");
     }
     call() {
@@ -39898,7 +39930,7 @@ Your goal is to detect potentially dangerous operations that can block tables fo
     }
 }
 const runHashFromComment = (commentBody) => {
-    const hashMatch = commentBody.match(/<!-- llm-run-hash: ([a-f0-9]+) -->/);
+    const hashMatch = /<!-- llm-run-hash: ([a-f0-9]+) -->/.exec(commentBody);
     return hashMatch ? hashMatch[1] : null;
 };
 
@@ -39912,6 +39944,7 @@ var github_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _a
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 
 const GITHUB_TOKEN = (0,core.getInput)("github_token");
@@ -39978,6 +40011,7 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
 
 
 
+
 const MIGRATIONS_PATH = "database/migrations/";
 const OPENAI_API_KEY = (0,core.getInput)("openai_token");
 const PROJECT_CONTEXT = (0,core.getInput)("context");
@@ -40014,6 +40048,7 @@ const formatComment = (migrations) => {
     return commentBody;
 };
 const run = () => src_awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     if (!github.context.payload.pull_request) {
         throw new Error("This action can only be run on pull request events.");
     }
@@ -40022,11 +40057,14 @@ const run = () => src_awaiter(void 0, void 0, void 0, function* () {
     const migrationFiles = changedFiles.filter((file) => file.filename.startsWith(MIGRATIONS_PATH) && file.filename.endsWith(".php"));
     // Get queries for each migration
     const migrationsWithQueries = (yield Promise.all(migrationFiles.map((file) => src_awaiter(void 0, void 0, void 0, function* () {
+        var _a;
         const queries = yield queriesFromMigration(file.filename);
+        const code = yield promises_default().readFile(file.filename, "utf-8");
         return {
-            filename: file.filename.split("/").pop() || file.filename,
+            filename: (_a = file.filename.split("/").pop()) !== null && _a !== void 0 ? _a : file.filename,
             status: file.status,
             queries,
+            code,
         };
     }))));
     const existingComment = yield getComment();
@@ -40049,8 +40087,8 @@ const run = () => src_awaiter(void 0, void 0, void 0, function* () {
         return;
     }
     // Get run hash
-    const lastRunHash = runHashFromComment((existingComment === null || existingComment === void 0 ? void 0 : existingComment.body) || "");
-    console.log(`Last run hash: ${lastRunHash || "none"}`);
+    const lastRunHash = runHashFromComment((_a = existingComment === null || existingComment === void 0 ? void 0 : existingComment.body) !== null && _a !== void 0 ? _a : "");
+    console.log(`Last run hash: ${lastRunHash !== null && lastRunHash !== void 0 ? lastRunHash : "none"}`);
     const reviewerRun = new Reviewer(OPENAI_API_KEY, migrationsWithQueries, PROJECT_CONTEXT);
     console.log(`Current run hash: ${reviewerRun.runHash}`);
     if (lastRunHash === reviewerRun.runHash) {
@@ -40067,5 +40105,5 @@ const run = () => src_awaiter(void 0, void 0, void 0, function* () {
         yield createComment(commentBody);
     }
 });
-run();
+void run();
 
