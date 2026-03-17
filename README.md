@@ -25,7 +25,7 @@ permissions:
 Job parameters:
 
 ```yml
-- uses: mtwteam/laravel-migrations-check@v1
+- uses: mtwteam/laravel-migrations-check@v2
   with:
     # GitHub Token used to add comments to PRs.
     # Default: ${{ github.token }}
@@ -60,7 +60,7 @@ jobs:
           php-version: "8.4"
       - name: Install Composer dependencies
         run: composer install
-      - uses: mtwteam/laravel-migrations-check@v1
+      - uses: mtwteam/laravel-migrations-check@v2
         with:
           openai_token: ${{ secrets.OPENAI_API_KEY }}
           context: |
@@ -72,13 +72,13 @@ jobs:
 ### Just add a comment with a list of new migrations
 
 ```yml
-- uses: mtwteam/laravel-migrations-check@v1
+- uses: mtwteam/laravel-migrations-check@v2
 ```
 
 ### Review new migrations with ChatGPT
 
 ```yml
-- uses: mtwteam/laravel-migrations-check@v1
+- uses: mtwteam/laravel-migrations-check@v2
   with:
     openai_token: ${{ secrets.OPENAI_TOKEN }}
     context: We use MySQL 8.4, big tables are: events, orders.
