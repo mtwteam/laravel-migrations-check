@@ -3,7 +3,7 @@
   "version": "1.0",
   "type": "module",
   "scripts": {
-    "build": "ncc build src/index.ts --out dist",
+    "build": "ncc build src/index.ts --out dist --source-map",
     "lint": "eslint --max-warnings=0 src/",
     "test": "vitest",
     "prepare": "husky"
