@@ -12,19 +12,23 @@ const OPENAI_API_KEY = getInput("openai_token");
 const PROJECT_CONTEXT = getInput("context");
 
 const queriesFromMigration = async (filePath: string): Promise<string[]> => {
-  const output = await getExecOutput("php", [
-    "artisan",
-    "tinker",
-    "--no-ansi",
-    "--execute",
-    `echo implode(
+  const output = await getExecOutput(
+    "php",
+    [
+      "artisan",
+      "tinker",
+      "--no-ansi",
+      "--execute",
+      `echo implode(
       PHP_EOL,
       array_column(
         app("db")->pretend(fn()=>(include "${filePath}")->up()),
         "query"
       )
     )`,
-  ]);
+    ],
+    { ignoreReturnCode: true },
+  );
 
   return output.stdout.split("\n").filter((line) => line.trim() !== "");
 };

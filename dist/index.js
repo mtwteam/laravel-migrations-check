@@ -44721,7 +44721,7 @@ const queriesFromMigration = async (filePath) => {
         "query"
       )
     )`,
-    ]);
+    ], { ignoreReturnCode: true });
     return output.stdout.split("\n").filter((line) => line.trim() !== "");
 };
 const formatComment = (migrations) => {
