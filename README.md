@@ -36,7 +36,7 @@ Job parameters:
     openai_token: ""
 
     # OpenAI model to use for review.
-    # Default: "gpt-5.4-mini"
+    # Default: "gpt-5.5"
     model: ""
 
     # Additional context about the project, for example database engine version, list of big tables, etc.

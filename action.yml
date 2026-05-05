@@ -12,7 +12,7 @@ inputs:
     required: false
   model:
     description: "OpenAI model to use for review"
-    default: "gpt-5.4-mini"
+    default: "gpt-5.5"
   context:
     description: "Additional context for the LLM"
     required: false
