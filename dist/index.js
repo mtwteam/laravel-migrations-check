@@ -44540,6 +44540,7 @@ const _deployments_endpoints = new Set([
 
 class Reviewer {
     openaiApiKey;
+    model;
     migrations;
     context;
     INSTRUCTIONS = `
@@ -44549,8 +44550,9 @@ You will receive a list of database migrations, each with its corresponding SQL 
 
 Your goal is to detect potentially dangerous operations that can block tables for writing and cause application downtime.
 `.trim();
-    constructor(openaiApiKey, migrations, context) {
+    constructor(openaiApiKey, model, migrations, context) {
         this.openaiApiKey = openaiApiKey;
+        this.model = model;
         this.migrations = migrations;
         this.context = context;
     }
@@ -44588,7 +44590,7 @@ Your goal is to detect potentially dangerous operations that can block tables fo
             input: this.input,
         });
         const response = await openai.responses.create({
-            model: "gpt-4.1",
+            model: this.model,
             instructions: this.INSTRUCTIONS + this.context,
             input: this.input,
             text: {
@@ -44707,6 +44709,7 @@ const deleteComment = async (commentId) => {
 
 const MIGRATIONS_PATH = "database/migrations/";
 const OPENAI_API_KEY = getInput("openai_token");
+const OPENAI_MODEL = getInput("model");
 const PROJECT_CONTEXT = getInput("context");
 const queriesFromMigration = async (filePath) => {
     const output = await getExecOutput("php", [
@@ -44780,7 +44783,7 @@ const run = async () => {
     // Get run hash
     const lastRunHash = runHashFromComment(existingComment?.body ?? "");
     console.log(`Last run hash: ${lastRunHash ?? "none"}`);
-    const reviewerRun = new Reviewer(OPENAI_API_KEY, migrationsWithQueries, PROJECT_CONTEXT);
+    const reviewerRun = new Reviewer(OPENAI_API_KEY, OPENAI_MODEL, migrationsWithQueries, PROJECT_CONTEXT);
     console.log(`Current run hash: ${reviewerRun.runHash}`);
     if (lastRunHash === reviewerRun.runHash) {
         console.log("No changes in migrations since last review. Skipping LLM review.");

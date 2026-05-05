@@ -5,7 +5,7 @@
   "scripts": {
     "build": "ncc build src/index.ts --out dist --source-map",
     "lint": "eslint --max-warnings=0 src/",
-    "test": "vitest",
+    "test": "vitest run",
     "prepare": "husky"
   },
   "dependencies": {

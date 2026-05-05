@@ -6,6 +6,7 @@ describe("Reviewer", () => {
     it("generates correct input for OpenAI", () => {
       const reviewer = new Reviewer(
         "test-api-key",
+        "gpt-5.4-mini",
         [
           {
             filename: "2023_01_01_000000_create_users_table.php",

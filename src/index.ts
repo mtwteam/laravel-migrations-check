@@ -9,6 +9,7 @@ import type { Migration } from "./types";
 const MIGRATIONS_PATH = "database/migrations/";
 
 const OPENAI_API_KEY = getInput("openai_token");
+const OPENAI_MODEL = getInput("model");
 const PROJECT_CONTEXT = getInput("context");
 
 const queriesFromMigration = async (filePath: string): Promise<string[]> => {
@@ -107,7 +108,7 @@ const run = async () => {
   const lastRunHash = runHashFromComment(existingComment?.body ?? "");
   console.log(`Last run hash: ${lastRunHash ?? "none"}`);
 
-  const reviewerRun = new Reviewer(OPENAI_API_KEY, migrationsWithQueries, PROJECT_CONTEXT);
+  const reviewerRun = new Reviewer(OPENAI_API_KEY, OPENAI_MODEL, migrationsWithQueries, PROJECT_CONTEXT);
   console.log(`Current run hash: ${reviewerRun.runHash}`);
 
   if (lastRunHash === reviewerRun.runHash) {

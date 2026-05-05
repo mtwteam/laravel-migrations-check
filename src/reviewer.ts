@@ -13,6 +13,7 @@ Your goal is to detect potentially dangerous operations that can block tables fo
 
   constructor(
     private readonly openaiApiKey: string,
+    private readonly model: string,
     private readonly migrations: Migration[],
     private readonly context: string,
   ) {}
@@ -58,7 +59,7 @@ Your goal is to detect potentially dangerous operations that can block tables fo
     });
 
     const response = await openai.responses.create({
-      model: "gpt-4.1",
+      model: this.model,
       instructions: this.INSTRUCTIONS + this.context,
       input: this.input,
       text: {

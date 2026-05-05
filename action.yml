@@ -10,6 +10,9 @@ inputs:
   openai_token:
     description: "OpenAI API token"
     required: false
+  model:
+    description: "OpenAI model to use for review"
+    default: "gpt-5.4-mini"
   context:
     description: "Additional context for the LLM"
     required: false
