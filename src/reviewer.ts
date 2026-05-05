@@ -19,7 +19,12 @@ Your goal is to detect potentially dangerous operations that can block tables fo
   ) {}
 
   get runHash(): string {
-    return createHash("sha256").update(this.INSTRUCTIONS).update(this.context).update(this.input).digest("hex");
+    return createHash("sha256")
+      .update(this.model)
+      .update(this.INSTRUCTIONS)
+      .update(this.context)
+      .update(this.input)
+      .digest("hex");
   }
 
   async reviewMigrations(): Promise<Migration[]> {

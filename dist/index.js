@@ -44557,7 +44557,12 @@ Your goal is to detect potentially dangerous operations that can block tables fo
         this.context = context;
     }
     get runHash() {
-        return (0,external_crypto_namespaceObject.createHash)("sha256").update(this.INSTRUCTIONS).update(this.context).update(this.input).digest("hex");
+        return (0,external_crypto_namespaceObject.createHash)("sha256")
+            .update(this.model)
+            .update(this.INSTRUCTIONS)
+            .update(this.context)
+            .update(this.input)
+            .digest("hex");
     }
     async reviewMigrations() {
         const response = await this.call();
