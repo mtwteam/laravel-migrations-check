@@ -9,20 +9,20 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@actions/core": "^3.0.0",
+    "@actions/core": "^3.0.1",
     "@actions/exec": "^3.0.0",
-    "@actions/github": "^9.0.0",
-    "openai": "^6.33.0"
+    "@actions/github": "^9.1.1",
+    "openai": "^6.45.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@types/node": "^26.0.1",
-    "@vercel/ncc": "^0.38.4",
-    "eslint": "^10.1.0",
+    "@types/node": "^26.1.0",
+    "@vercel/ncc": "^0.44.1",
+    "eslint": "^10.6.0",
     "husky": "^9.1.7",
-    "prettier": "^3.8.1",
-    "typescript": "^6.0.2",
-    "typescript-eslint": "^8.58.0",
-    "vitest": "^4.1.2"
+    "prettier": "^3.9.4",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.62.1",
+    "vitest": "^4.1.9"
   }
 }
